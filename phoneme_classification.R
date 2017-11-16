@@ -1,0 +1,17 @@
+library(ElemStatLearn)
+data(phoneme)
+train=phoneme[c(1:3340),]
+test=phoneme[-c(1:3340),]
+library(MASS)
+library(splines)
+n=ns(1:256,df=12)
+X=train[,1:256]
+Y=test[,1:256]
+obj1=qda(X,train[,'g'])
+pred1=predict(obj1,test[,1:256])
+table(pred1$class,test[,'g'])
+X1=as.matrix(X)%*%n
+Y1=as.matrix(Y)%*%n
+obj2=qda(as.data.frame(X1),train[,'g'])
+pred2=predict(obj2,Y1)
+table(pred2$class,test[,'g'])
